@@ -24,11 +24,12 @@ The oracle images created from using the scripts from the [oracle/docker-images]
 
 The script in this repository automates the [process documented by oracle](https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance/samples/prebuiltdb) to create a database image with a pre-built database.
 
-## Running this script
-Navigate to the source directory and run the `prebuild.sh` script.
+## Building image from source
+Clone this repo, navigate to the source directory and run the `prebuild.sh` script.
 
 ```sh
-cd src
+git clone git@github.com:KyleAure/oracle-docker-images.git
+cd oracle-docker-images/src
 ./prebuild.sh
 ```
 
@@ -40,13 +41,20 @@ This script will do the following:
 5. Commit this container to a new image `oracle/database:18.4.0-xe-prebuilt`
 6. Clean up the intermediary containers, and remove the `oracle/docker-images` repo.
 
-To push this image to dockerhub after building it use the following commands:
+## Pull from dockerhub
 ```sh
-./prebuild.sh -p -u <dockerhub-username> -v <dockerhub-version>
+docker pull kyleaure/oracle-18.4.0-xe-prebuilt
 ```
 
+## Publishing to dockerhub
+To push this image to a **private** dockerhub repository.
 
-
-
-
-
+Create a private repository named:
+```txt
+<dockerhub-username>/oracle-18.4.0-xe-prebuilt
+```
+Then run the `prebuild.sh` script with the push parameter.
+```sh
+# version is typically 1.0 or latest
+./prebuild.sh -p -u <dockerhub-username> -v <dockerhub-version>
+```

@@ -1,14 +1,17 @@
 Oracle Database 18c (version 18.4.0)
 ============================
 
-
-
 ## Build from source
+Script to build image is available on GitHub at: https://github.com/KyleAure/oracle-docker-images 
+
+Run the following commands to build image locally:
 ```sh
 git clone git@github.com:KyleAure/oracle-docker-images.git
 cd oracle-docker-images/src
 ./prebuild.sh
 ```
+
+The resulting image name will be `oracle/database:18.4.0-xe-prebuilt`
 
 ## Pull from dockerhub
 ```sh
@@ -19,6 +22,10 @@ docker pull kyleaure/oracle-18.4.0-xe-prebuilt
 
 Run with port 1521 (database) open and port 5500 (OEM Express) open.
 ```sh
+#From source
+docker run -d -p 1521:1521 -p 5500:5500 oracle/database:18.4.0-xe-prebuilt
+
+#From dockerhub
 docker run -d -p 1521:1521 -p 5500:5500 kyleaure/oracle-18.4.0-xe-prebuilt
 ```
 
