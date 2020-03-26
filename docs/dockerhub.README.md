@@ -76,7 +76,8 @@ docker exec -it --user oracle <container-name> /bin/sh -c 'sqlplus system/oracle
 docker exec -it --user oracle <container-name> /bin/sh -c 'sqlplus pdbadmin@XEPDB1/oracle'
 ```
 
-### JDBC
+### JDBC URLs
+Use these URLs to connect to the database using a current JDBC driver
 ```URL
 jdbc:oracle:thin:system/oracle@//localhost:1521:XE
 jdbc:oracle:thin:system/oracle@//localhost:1521/XE

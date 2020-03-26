@@ -43,9 +43,6 @@ This script will do the following:
 To push this image to dockerhub after building it use the following commands:
 ```sh
 ./prebuild.sh -p -u <dockerhub-username> -v <dockerhub-version>
-
-docker tag oracle/database:18.4.0-xe-prebuilt <dockerhub-username>/<dockerhub-repo>:<version>
-docker push <dockerhub-username>/<dockerhub-repo>:<version>
 ```
 
 
