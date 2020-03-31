@@ -3,8 +3,10 @@
 #   https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance/samples/prebuiltdb
 
 #----- ARGUMENTS ------#
-while getopts "pu:v:?h" optname; do
+while getopts "o:cpu:v:?h" optname; do
   case "$optname" in
+    "o") ORACLE_VERSION="$OPTARG" ;;
+    "c") CLEAN=true ;;
     "p") DOCKER_PUSH=true ;;
     "u") DOCKER_USER="$OPTARG" ;;
     "v") DOCKER_VERSION="$OPTARG" ;;
@@ -20,9 +22,11 @@ Usage: prebuild.sh [-p [push] -u <docker-username> -v <docker-version>] [-?|-h h
 Builds a Docker Image for Oracle Database.
   
 Parameters:
+   -o: oracle database version to use
+   -c: cleanup artifacts when done
    -p: perform a docker push after prebuilt database is created
       -u: (required) your dockerhub username
-      -v: (required) version of dockerhub image (ex 1.0)
+      -v: (required) version of resulting dockerhub image (ex 1.0, latest)
    -h|?: Help
 EOF
 }
@@ -45,14 +49,14 @@ RUN_ARGS=""
 
 # Check if user defined an alternative version
 # Commented out because besides 18.4.0 you need to download binaries ahead of time
-#if [ ! -z "$1" ]; then
-#    VERSION=$1    
-#fi
-# 
-# Runtime arguments
-# if [ "$VERSION" = "11.2.0.2" ]; then
-#     RUN_ARGS="--shm-size=1g"
-# fi
+if [ ! -z "$ORACLE_VERSION" ]; then
+   VERSION=$ORACLE_VERSION
+fi
+
+#Runtime arguments
+if [ "$VERSION" = "11.2.0.2" ]; then
+    RUN_ARGS="--shm-size=1g"
+fi
 
 # Base image information
 BASE_IMAGE="${PREFIX}/${POSTFIX}:${VERSION}-${BUILD}"
@@ -107,9 +111,8 @@ dockerBuildBase() {
     # Execute build command
     ./buildDockerImage.sh -v $VERSION -x -o $BUILD_ARGS
 
-    # Back to base directory and remove git folder
+    # Back to base directory
     cd $DIR
-    rm -rf $GIT_FOLDER
 
     echoWithColor "<--- Building Base Image"
 }
@@ -144,6 +147,7 @@ cleanup() {
     echoWithColor "---> Cleaning Up"
     docker rm $INTERMEDIATE_BUILD
     docker rmi $(docker images -f dangling=true -q)
+    rm -rf $GIT_FOLDER
     # Uncomment to remove base image.  Not on by default incase you want to inspect / use base image. 
     # docker rmi ${BASE_IMAGE}
     echoWithColor "<--- Cleaning Up"
@@ -183,8 +187,10 @@ if [ ! "${FINAL_IMAGE_ID}" ]; then
     # Commit container so it can be reused as a prebuilt image. 
     docker commit -m "oracle prebuilt database" ${INTERMEDIATE_BUILD} ${FINAL_IMAGE}
 
-    # Cleanup leftover docker junk
-    cleanup
+    # Cleanup leftover junk
+    if [ $CLEAN ]; then
+        cleanup
+    fi
 else
     echoWithColor "${FINAL_IMAGE} image already exists, skipping build step."
 fi
