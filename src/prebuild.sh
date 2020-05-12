@@ -106,6 +106,8 @@ dockerBuildBase() {
     sed -i '' 's/HEALTHCHECK.*/HEALTHCHECK --interval=1m --start-period=15m\\ /' ./$VERSION/Dockerfile.xe
     # MAC OS seems to stall when calling the yes command to remove an intermediary image
     # This image will be removed during the cleanup stage instead
+    # This line can be removed once this issue is resolved: 
+    #   https://github.com/oracle/docker-images/issues/1542
     sed -i '' 's/yes.*/#yes/' ./buildDockerImage.sh
 
     # Execute build command
