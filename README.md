@@ -1,4 +1,7 @@
 # Oracle Docker Images
+
+> ⚠️ Docker image version 1.0 has a flaw! The user SYSTEM's password expires 03/05/2021. Upgrade to version 2.0 where the user SYSTEM's password never expires. 
+
 This repo provides a script to automate the process of creating a prebuilt oracle docker image.
 
 ## Background
