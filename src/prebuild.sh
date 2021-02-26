@@ -138,7 +138,12 @@ waitForHealthCheck() {
         sleep 15
     done
 
-    echoWithColor "Docker instance found to be healthy. Stopping container"
+    echoWithColor "Docker instance found to be healthy. Editing password life time"
+
+    docker exec --user oracle ${INTERMEDIATE_BUILD} /bin/sh -c 'echo "ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;" | sqlplus / as sysdba '
+    docker exec --user oracle ${INTERMEDIATE_BUILD} /bin/sh -c 'echo "SELECT USERNAME,EXPIRY_DATE FROM USER_USERS;" | sqlplus / as sysdba '
+
+    echoWithColor "Stopping container"
 
     # Stop container
     docker stop -t 30 ${INTERMEDIATE_BUILD}
