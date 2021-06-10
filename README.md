@@ -1,3 +1,5 @@
+### NOTE!!! Requires a Docker Engine allowing --squash for builds (typically achieved by enabling Docker experimental features) 
+
 # Oracle Docker Images
 
 > ⚠️ Docker image version 1.0 has a flaw! The user SYSTEM's password expires 03/05/2021. Upgrade to version 2.0 where the user SYSTEM's password never expires. 
@@ -31,7 +33,7 @@ The script in this repository automates the [process documented by oracle](https
 Clone this repo, navigate to the source directory and run the `prebuild.sh` script.
 
 ```sh
-git clone git@github.com:KyleAure/oracle-docker-images.git
+git clone git@github.com:wingnut/oracle-docker-images.git
 cd oracle-docker-images/src
 ./prebuild.sh
 ```
@@ -46,7 +48,7 @@ This script will do the following:
 
 ## Pull from dockerhub
 ```sh
-docker pull kyleaure/oracle-18.4.0-xe-prebuilt
+docker pull wingnut/oracle-18.4.0-xe-prebuilt
 ```
 
 ## Publishing to dockerhub
