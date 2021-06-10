@@ -1,4 +1,4 @@
-### NOTE!!! Requires a Docker Engine allowing --squash for builds (typically achieved by enabling Docker experimental features) 
+## NOTE!!! Requires a Docker Engine allowing --squash for builds (typically achieved by enabling Docker experimental features) 
 
 # Oracle Docker Images
 
